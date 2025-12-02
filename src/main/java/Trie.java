@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 public class Trie {
 
@@ -98,16 +99,65 @@ public void insert(String word){
                     insert(p);
                 }
             }
-
-
         }
-
     } catch (FileNotFoundException e) {
         throw new RuntimeException(e);
     } catch (IOException e) {
         throw new RuntimeException(e);
     }
+    }
 
+
+
+    private TrieNode encontrarNode(String prefixo) {
+        TrieNode node = root;
+
+        for (char c : prefixo.toCharArray()) {
+            int index = c - 'a';
+            if (index < 0 || index >= 26) {
+                return null; // ignora caracteres inválidos
+            }
+
+            if (node.children[index] == null) {
+                return null; // prefixo não existe
+            }
+
+            node = node.children[index];
+        }
+
+        return node;
+    }
+
+
+    private void coletarPalavras(TrieNode node, String prefixo, List<String> lista) {
+
+        if (node.isWord) {
+            lista.add(prefixo);
+        }
+
+        for (int i = 0; i < 26; i++) {
+            TrieNode filho = node.children[i];
+            if (filho != null) {
+                char letra = (char) ('a' + i);
+                coletarPalavras(filho, prefixo + letra, lista);
+            }
+        }
+    }
+
+    public List<String> sugerir(String prefixo) {
+        prefixo = prefixo.toLowerCase();
+
+        TrieNode node = encontrarNode(prefixo);
+
+        List<String> resultados = new java.util.ArrayList<>();
+
+        if (node == null) {
+            return resultados; // não há sugestões
+        }
+
+        coletarPalavras(node, prefixo, resultados);
+
+        return resultados;
     }
 
 

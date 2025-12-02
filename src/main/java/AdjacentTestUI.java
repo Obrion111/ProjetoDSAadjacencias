@@ -11,11 +11,18 @@ public class AdjacentTestUI extends JFrame {
     private final JTextField inputField;
     private final JTextArea outputArea;
     private final KeyboardAdjacency kb;
+    private SuggestionWindow suggestionWindow;
+    private Trie trie;
+
+
+
 
     public AdjacentTestUI(){
 
+
+        suggestionWindow = new SuggestionWindow();
         kb = new KeyboardAdjacency();
-        Trie trie = new Trie();
+        trie = new Trie();
 
         trie.carregarDicionario("dicionario.txt");
 
@@ -61,20 +68,25 @@ public class AdjacentTestUI extends JFrame {
 
         // Última letra que o utilizador escreveu
         for(int i = 0; i< texto.length(); i++){
-
-
-
         char c = texto.charAt(i);
-
         List<Character> adj = kb.getPossibleChars(c);
-
         sb.append("Letra '").append(c).append("' → ").append(adj).append("\n");
         }
 
 
 
         outputArea.setText(sb.toString());
+        
+        List<String> sugestoes = trie.sugerir(texto);
+        suggestionWindow.mostrarSugestoes(sugestoes);
+
+
+
     }
+
+
+
+
 
         }
 
