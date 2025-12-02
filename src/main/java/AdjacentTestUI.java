@@ -8,13 +8,18 @@ public class AdjacentTestUI extends JFrame {
 
 
 
-    private JTextField inputField;
-    private JTextArea outputArea;
-    private KeyboardAdjacency kb;
+    private final JTextField inputField;
+    private final JTextArea outputArea;
+    private final KeyboardAdjacency kb;
 
     public AdjacentTestUI(){
 
         kb = new KeyboardAdjacency();
+        Trie trie = new Trie();
+
+        trie.carregarDicionario("dicionario.txt");
+
+        trie.imprimirArvore();
 
         inputField = new JTextField();
         outputArea = new JTextArea();

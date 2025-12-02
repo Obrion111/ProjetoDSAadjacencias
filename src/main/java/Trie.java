@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Trie {
 
 
@@ -73,6 +78,36 @@ public void insert(String word){
             }
 
         }
+    }
+
+
+    public void carregarDicionario(String caminho){
+    try (BufferedReader br = new BufferedReader(new FileReader(caminho))) {
+
+        String linha;
+        while ((linha = br.readLine()) != null){
+            linha = linha.toLowerCase();
+
+            //criamos um array porque cada linha pode ter mais que 1 palavra
+            // isso faz com que tenhamos que dividir as palavras da mesma linha e colocá-las num array
+
+            String[] palavras = linha.split("[^a-z]+");
+
+            for (String p: palavras){
+                if(!p.isEmpty()){
+                    insert(p);
+                }
+            }
+
+
+        }
+
+    } catch (FileNotFoundException e) {
+        throw new RuntimeException(e);
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
+
     }
 
 
